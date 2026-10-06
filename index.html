@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>waslise aka xoly</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -129,15 +128,16 @@
         .nickname-badge {
             background: rgba(0, 0, 0, 0.06);
             border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 6px 18px;
+            padding: 6px 14px;
             border-radius: 9999px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             position: relative;
             overflow: hidden;
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
+            max-width: 100%;
         }
 
         .nickname-badge::after {
@@ -194,8 +194,8 @@
             background: rgba(0, 0, 0, 0.06);
             border: 1px solid rgba(0, 0, 0, 0.12);
             color: #18181b;
-            font-size: 11px; font-weight: 500;
-            padding: 4px 12px;
+            font-size: 10px; font-weight: 500;
+            padding: 3px 10px;
             border-radius: 9999px;
             font-family: 'JetBrains Mono', monospace;
             display: inline-flex; align-items: center;
@@ -257,18 +257,18 @@
 
         .custom-slider {
             -webkit-appearance: none; appearance: none;
-            width: 100%; height: 3px;
+            width: 100%; height: 4px;
             background: rgba(0, 0, 0, 0.15);
             border-radius: 2px; outline: none;
         }
         .custom-slider::-webkit-slider-thumb {
             -webkit-appearance: none; appearance: none;
-            width: 9px; height: 9px; border-radius: 50%;
+            width: 12px; height: 12px; border-radius: 50%;
             background: #18181b;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease;
         }
-        .custom-slider::-webkit-slider-thumb:hover { transform: scale(1.4); }
+        .custom-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
 
         .avatar-glow {
             position: relative;
@@ -363,32 +363,31 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 antialiased selection:bg-black selection:text-white relative">
+<body class="min-h-screen flex flex-col items-center justify-center p-3 sm:p-4 antialiased selection:bg-black selection:text-white relative">
 
     <div class="noise-overlay"></div>
 
-    <!-- Анимированный фоновый контейнер с блюром и виньеткой -->
     <div class="bg-container">
         <div class="bg-image"></div>
     </div>
 
-    <div id="splash-screen" class="fixed inset-0 flex items-center justify-center text-center cursor-pointer select-none">
-        <h1 class="text-xl md:text-2xl font-mono tracking-widest text-zinc-100 transition-transform duration-300 hover:scale-105">
+    <div id="splash-screen" class="fixed inset-0 flex items-center justify-center text-center cursor-pointer select-none p-4">
+        <h1 class="text-lg sm:text-2xl font-mono tracking-widest text-zinc-100 transition-transform duration-300 hover:scale-105">
             click to continue
         </h1>
     </div>
 
-    <div id="toast" class="fixed top-6 z-50 transform -translate-y-12 opacity-0 pointer-events-none bg-zinc-900 text-white text-xs font-mono font-semibold px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 border border-black/10">
+    <div id="toast" class="fixed top-4 sm:top-6 z-50 transform -translate-y-12 opacity-0 pointer-events-none bg-zinc-900 text-white text-xs font-mono font-semibold px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 border border-black/10">
         <i class="fa-solid fa-check text-xs text-white"></i>
         <span id="toast-message">Copied!</span>
     </div>
 
-    <main class="w-full max-w-[420px] relative z-10 my-auto space-y-3">
+    <main class="w-full max-w-[400px] sm:max-w-[420px] relative z-10 my-auto space-y-2.5 sm:space-y-3">
 
-        <div class="glass-card rounded-2xl overflow-hidden relative pb-5 animate-card">
+        <div class="glass-card rounded-2xl overflow-hidden relative pb-4 sm:pb-5 animate-card">
 
             <div class="relative w-full mb-3">
-                <div class="h-36 w-full bg-neutral-200 overflow-hidden border-b border-black/10 relative">
+                <div class="h-28 sm:h-36 w-full bg-neutral-200 overflow-hidden border-b border-black/10 relative">
                     <img src="https://i.pinimg.com/originals/cb/9b/64/cb9b6410cd13b4820440449465a88b77.gif" 
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop';" 
                          alt="Banner" 
@@ -396,8 +395,8 @@
                     <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20"></div>
                 </div>
 
-                <div class="flex justify-center relative z-20 -mt-12 px-5">
-                    <div class="w-24 h-24 rounded-full bg-white p-1 border border-black/10 shadow-2xl overflow-hidden shrink-0 avatar-glow">
+                <div class="flex justify-center relative z-20 -mt-10 sm:-mt-12 px-4">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white p-1 border border-black/10 shadow-2xl overflow-hidden shrink-0 avatar-glow">
                         <img id="user-avatar" 
                              src="https://i.pinimg.com/736x/81/b3/7e/81b37ea03b38382b57b3dba926e685f5.jpg" 
                              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=256&auto=format&fit=crop';" 
@@ -407,44 +406,44 @@
                 </div>
             </div>
 
-            <div class="text-center px-5 space-y-2">
+            <div class="text-center px-4 sm:px-5 space-y-2">
                 <div>
                     <div class="nickname-badge">
-                        <h1 id="nickname-text" class="text-sm font-bold text-zinc-900 tracking-wide nickname-typing transition-colors duration-300"></h1>
-                        <span class="aka-text text-[10px] font-mono text-zinc-500 border-l border-black/15 pl-2 transition-colors duration-300">aka xoly</span>
+                        <h1 id="nickname-text" class="text-xs sm:text-sm font-bold text-zinc-900 tracking-wide nickname-typing transition-colors duration-300"></h1>
+                        <span class="aka-text text-[9px] sm:text-[10px] font-mono text-zinc-500 border-l border-black/15 pl-1.5 sm:pl-2 transition-colors duration-300">aka xoly</span>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-center gap-1.5 flex-wrap pt-1">
-                    <span class="badge-tag"><i class="fa-solid fa-wand-magic-sparkles text-[10px] mr-1.5 text-zinc-600"></i>Vibecoder</span>
-                    <span class="badge-tag"><i class="fa-solid fa-paste text-[10px] mr-1.5 text-zinc-600"></i>Paster</span>
-                    <span class="badge-tag"><i class="fa-solid fa-cat text-[10px] mr-1.5 text-zinc-600"></i>Femboy</span>
+                <div class="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap pt-0.5">
+                    <span class="badge-tag"><i class="fa-solid fa-wand-magic-sparkles text-[9px] mr-1 text-zinc-600"></i>Vibecoder</span>
+                    <span class="badge-tag"><i class="fa-solid fa-paste text-[9px] mr-1 text-zinc-600"></i>Paster</span>
+                    <span class="badge-tag"><i class="fa-solid fa-cat text-[9px] mr-1 text-zinc-600"></i>Femboy</span>
                 </div>
 
-                <div class="text-xs font-mono text-zinc-700 leading-relaxed max-w-xs mx-auto pt-1">
+                <div class="text-xs font-mono text-zinc-700 leading-relaxed max-w-xs mx-auto pt-0.5">
                     <span id="typing-text" class="cursor"></span>
                 </div>
 
-                <div class="flex items-center justify-center gap-3 pt-2">
-                    <button onclick="copyDiscordTag('skidax')" title="Discord: @skidax" class="social-btn w-10 h-10 rounded-full flex items-center justify-center">
-                        <i class="fa-brands fa-discord text-base"></i>
+                <div class="flex items-center justify-center gap-2.5 sm:gap-3 pt-1.5">
+                    <button onclick="copyDiscordTag('skidax')" title="Discord: @skidax" class="social-btn w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center">
+                        <i class="fa-brands fa-discord text-sm sm:text-base"></i>
                     </button>
-                    <a href="https://github.com/xolylol" target="_blank" title="GitHub: xolylol" class="social-btn w-10 h-10 rounded-full flex items-center justify-center">
-                        <i class="fa-brands fa-github text-base"></i>
+                    <a href="https://github.com/xolylol" target="_blank" title="GitHub: xolylol" class="social-btn w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center">
+                        <i class="fa-brands fa-github text-sm sm:text-base"></i>
                     </a>
-                    <a href="https://t.me/vudlow" target="_blank" title="Telegram: vudlow" class="social-btn w-10 h-10 rounded-full flex items-center justify-center">
-                        <i class="fa-brands fa-telegram text-base"></i>
+                    <a href="https://t.me/vudlow" target="_blank" title="Telegram: vudlow" class="social-btn w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center">
+                        <i class="fa-brands fa-telegram text-sm sm:text-base"></i>
                     </a>
                 </div>
             </div>
 
         </div>
 
-        <div class="glass-card rounded-xl p-3 flex items-center gap-3 relative overflow-hidden animate-card">
-            <div class="relative w-10 h-10 flex-shrink-0">
-                <img id="discord-card-avatar" src="https://i.pinimg.com/736x/81/b3/7e/81b37ea03b38382b57b3dba926e685f5.jpg" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=256&auto=format&fit=crop'" class="w-10 h-10 rounded-full object-cover">
-                <img id="discord-avatar-decoration" src="" class="absolute -top-1 -left-1 w-12 h-12 pointer-events-none hidden" alt="Decoration">
-                <div id="discord-card-status" class="discord-status-badge absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-white p-[1.5px] flex items-center justify-center shadow-md">
+        <div class="glass-card rounded-xl p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3 relative overflow-hidden animate-card">
+            <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
+                <img id="discord-card-avatar" src="https://i.pinimg.com/736x/81/b3/7e/81b37ea03b38382b57b3dba926e685f5.jpg" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=256&auto=format&fit=crop'" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover">
+                <img id="discord-avatar-decoration" src="" class="absolute -top-1 -left-1 w-11 h-11 sm:w-12 sm:h-12 pointer-events-none hidden" alt="Decoration">
+                <div id="discord-card-status" class="discord-status-badge absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-white p-[1.5px] flex items-center justify-center shadow-md">
                     <svg viewBox="0 0 16 16" class="w-full h-full"><circle cx="8" cy="8" r="5" fill="none" stroke="#80848e" stroke-width="3"/></svg>
                 </div>
             </div>
@@ -454,19 +453,17 @@
                     <span id="discord-global-name" class="text-xs font-semibold text-zinc-900 truncate">waslise</span>
                     <span id="discord-clan-tag" class="hidden inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-black/10 text-zinc-800 border border-black/15 tracking-wide"></span>
                 </div>
-                <div id="discord-status-title" class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider transition-colors duration-500">Offline</div>
+                <div id="discord-status-title" class="text-[9px] sm:text-[10px] font-mono text-zinc-500 uppercase tracking-wider transition-colors duration-500">Offline</div>
                 <div id="activity-detail" class="text-xs font-medium text-zinc-700 truncate mt-0.5">Currently away</div>
             </div>
         </div>
 
-        <!-- Музыкальный плеер -->
-        <div class="glass-card rounded-xl p-3 flex items-center gap-3 animate-card">
+        <div class="glass-card rounded-xl p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3 animate-card">
             <audio id="audio-player" loop>
-                <source src="audio.mp3" type="audio/mpeg">
+                <source src="bladee%20-%20Reality%20Surf%20(video)%20-%20drain%20gang%20(mp3cut.net).mp3" type="audio/mpeg">
             </audio>
 
             <div class="cover-wrapper">
-                <!-- Подгрузка локальной обложки cover.jpg -->
                 <img id="track-cover" 
                      src="cover.jpg" 
                      onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=256&auto=format&fit=crop';" 
@@ -482,16 +479,16 @@
 
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between text-xs">
-                    <div class="truncate pr-2">
-                        <span class="font-semibold text-zinc-900">Reality Surf</span>
-                        <span class="text-[10px] font-mono text-zinc-500 ml-1">by bladee</span>
+                    <div class="truncate pr-1">
+                        <span class="font-semibold text-zinc-900 text-xs">Reality Surf</span>
+                        <span class="text-[9px] sm:text-[10px] font-mono text-zinc-500 ml-1">by bladee</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <span id="current-time" class="text-[9px] font-mono text-zinc-500 min-w-[28px]">00:00</span>
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <span id="current-time" class="text-[9px] font-mono text-zinc-500 min-w-[26px]">00:00</span>
                     <input type="range" id="seek-slider" min="0" max="100" value="0" class="custom-slider flex-1">
-                    <span id="duration-time" class="text-[9px] font-mono text-zinc-500 min-w-[28px] text-right">00:00</span>
+                    <span id="duration-time" class="text-[9px] font-mono text-zinc-500 min-w-[26px] text-right">00:00</span>
                 </div>
             </div>
 
@@ -515,23 +512,24 @@
             });
         });
 
-        document.addEventListener('click', (e) => {
-            for (let i = 0; i < 8; i++) {
+        document.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('button, a, input')) return;
+            for (let i = 0; i < 6; i++) {
                 const spark = document.createElement('div');
                 spark.className = 'click-spark';
-                const angle = (Math.PI * 2 * i) / 8;
-                const distance = 25 + Math.random() * 35;
+                const angle = (Math.PI * 2 * i) / 6;
+                const distance = 20 + Math.random() * 25;
                 spark.style.left = e.clientX + 'px';
                 spark.style.top = e.clientY + 'px';
                 spark.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
                 spark.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
                 document.body.appendChild(spark);
-                setTimeout(() => spark.remove(), 900);
+                setTimeout(() => spark.remove(), 800);
             }
         });
 
         let audioCtx = null;
-        document.addEventListener('click', () => {
+        document.addEventListener('pointerdown', () => {
             try {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
