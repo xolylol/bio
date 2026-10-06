@@ -345,8 +345,45 @@
             transition: stroke-dashoffset 0.15s linear;
         }
 
+        /* Исправление аватара и декорации Discord */
+        .discord-avatar-container {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 640px) {
+            .discord-avatar-container {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .discord-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .discord-decoration-img {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            pointer-events: none;
+            object-fit: contain;
+            z-index: 2;
+        }
+
         .discord-status-badge {
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 3;
         }
         .discord-status-badge svg {
             transition: opacity 0.4s ease, transform 0.4s ease;
@@ -437,9 +474,10 @@
         </div>
 
         <div class="glass-card rounded-xl p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3 relative overflow-hidden animate-card">
-            <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
-                <img id="discord-card-avatar" src="https://i.pinimg.com/736x/81/b3/7e/81b37ea03b38382b57b3dba926e685f5.jpg" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=256&auto=format&fit=crop'" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover">
-                <img id="discord-avatar-decoration" src="" class="absolute -top-1 -left-1 w-11 h-11 sm:w-12 sm:h-12 pointer-events-none hidden" alt="Decoration">
+            <!-- Ровный контейнер для аватара и декорации -->
+            <div class="discord-avatar-container">
+                <img id="discord-card-avatar" src="https://i.pinimg.com/736x/81/b3/7e/81b37ea03b38382b57b3dba926e685f5.jpg" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=256&auto=format&fit=crop'" class="discord-avatar-img">
+                <img id="discord-avatar-decoration" src="" class="discord-decoration-img hidden" alt="Decoration">
                 <div id="discord-card-status" class="discord-status-badge absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-white p-[1.5px] flex items-center justify-center shadow-md">
                     <svg viewBox="0 0 16 16" class="w-full h-full"><circle cx="8" cy="8" r="5" fill="none" stroke="#80848e" stroke-width="3"/></svg>
                 </div>
@@ -456,7 +494,6 @@
         </div>
 
         <div class="glass-card rounded-xl p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3 animate-card">
-            <!-- ПЕРЕИМЕНУЙ СВОЙ МУЗЫКАЛЬНЫЙ ФАЙЛ В track.mp3 И ПОЛОЖИ РЯДОМ С HTML ИЛИ УКАЖИ ПРЯМУЮ ССЫЛКУ -->
             <audio id="audio-player" loop playsinline preload="auto">
                 <source src="track.mp3" type="audio/mpeg">
             </audio>
@@ -580,14 +617,23 @@
         playBtn.addEventListener('click', toggleAudio);
 
         function formatTime(sec) {
-            if (isNaN(sec)) return "00:00";
+            if (isNaN(sec) || !isFinite(sec)) return "00:00";
             const m = Math.floor(sec / 60);
             const s = Math.floor(sec % 60);
             return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
+        function updateDuration() {
+            if (audio.duration && isFinite(audio.duration)) {
+                durationTimeEl.textContent = formatTime(audio.duration);
+            }
+        }
+
+        audio.addEventListener('loadedmetadata', updateDuration);
+        audio.addEventListener('durationchange', updateDuration);
+
         audio.addEventListener('timeupdate', () => {
-            if (audio.duration && !isDraggingSlider) {
+            if (audio.duration && isFinite(audio.duration) && !isDraggingSlider) {
                 const progress = audio.currentTime / audio.duration;
                 const value = progress * 100;
                 seekSlider.value = value;
@@ -599,13 +645,9 @@
             }
         });
 
-        audio.addEventListener('loadedmetadata', () => {
-            durationTimeEl.textContent = formatTime(audio.duration);
-        });
-
         seekSlider.addEventListener('input', () => {
             isDraggingSlider = true;
-            if (audio.duration) {
+            if (audio.duration && isFinite(audio.duration)) {
                 const previewTime = (seekSlider.value / 100) * audio.duration;
                 currentTimeEl.textContent = formatTime(previewTime);
                 const offset = RING_CIRCUMFERENCE * (1 - seekSlider.value / 100);
@@ -614,7 +656,7 @@
         });
 
         seekSlider.addEventListener('change', () => {
-            if (audio.duration) {
+            if (audio.duration && isFinite(audio.duration)) {
                 audio.currentTime = (seekSlider.value / 100) * audio.duration;
             }
             isDraggingSlider = false;
@@ -625,7 +667,6 @@
         function handleEnter(e) {
             if (e) e.preventDefault();
 
-            // Инициализация звукового контекста
             try {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 if (audioCtx.state === 'suspended') {
