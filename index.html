@@ -27,14 +27,12 @@
             position: relative;
         }
 
-        /* Зернистость (Grain / Noise Overlay) */
         .noise-overlay {
             position: fixed; inset: 0;
             pointer-events: none; z-index: 50; opacity: 0.12;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* ЭФФЕКТЫ ФОНА */
         .bg-container {
             position: fixed; inset: 0;
             z-index: -2; pointer-events: none;
@@ -56,7 +54,6 @@
             100% { transform: scale(1.08); }
         }
 
-        /* Виньетка (затемнение по краям) */
         body::after {
             content: '';
             position: fixed; inset: 0;
@@ -459,8 +456,9 @@
         </div>
 
         <div class="glass-card rounded-xl p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3 animate-card">
-            <audio id="audio-player" loop>
-                <source src="bladee%20-%20Reality%20Surf%20(video)%20-%20drain%20gang%20(mp3cut.net).mp3" type="audio/mpeg">
+            <!-- ПЕРЕИМЕНУЙ СВОЙ МУЗЫКАЛЬНЫЙ ФАЙЛ В track.mp3 И ПОЛОЖИ РЯДОМ С HTML ИЛИ УКАЖИ ПРЯМУЮ ССЫЛКУ -->
+            <audio id="audio-player" loop playsinline preload="auto">
+                <source src="track.mp3" type="audio/mpeg">
             </audio>
 
             <div class="cover-wrapper">
@@ -529,20 +527,6 @@
         });
 
         let audioCtx = null;
-        document.addEventListener('pointerdown', () => {
-            try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.frequency.value = 800 + Math.random() * 400;
-                osc.type = 'sine';
-                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                osc.start(audioCtx.currentTime);
-                osc.stop(audioCtx.currentTime + 0.1);
-            } catch (e) {}
-        });
 
         const nicknameText = "waslise";
         let nickIndex = 0;
@@ -586,7 +570,7 @@
             if (audio.paused) {
                 audio.play().then(() => {
                     playIcon.className = 'fa-solid fa-pause text-xs';
-                }).catch(() => {});
+                }).catch((err) => console.log('Error playing:', err));
             } else {
                 audio.pause();
                 playIcon.className = 'fa-solid fa-play text-xs ml-0.5';
@@ -637,19 +621,36 @@
         });
 
         const splashScreen = document.getElementById('splash-screen');
-        function handleEnter() {
+        
+        function handleEnter(e) {
+            if (e) e.preventDefault();
+
+            // Инициализация звукового контекста
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            } catch(err) {}
+
             splashScreen.classList.add('fade-out');
-            audio.currentTime = 0;
+            
+            audio.load();
             const playPromise = audio.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     playIcon.className = 'fa-solid fa-pause text-xs';
-                }).catch(e => console.log('Autoplay prevented:', e));
+                }).catch(e => {
+                    console.log('Autoplay error:', e);
+                    playIcon.className = 'fa-solid fa-play text-xs ml-0.5';
+                });
             }
             setTimeout(typeNickname, 200);
             setTimeout(typeBio, 800);
         }
-        splashScreen.addEventListener('pointerdown', handleEnter, { once: true });
+
+        splashScreen.addEventListener('touchend', handleEnter, { once: true });
+        splashScreen.addEventListener('click', handleEnter, { once: true });
 
         function showToast(message) {
             const toast = document.getElementById('toast');
